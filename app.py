@@ -419,11 +419,7 @@ Exemplo Prático:
 🚨> {{🤫*}} / Mostre mais, fale menos... 📌 Dica: Em vez de dizer “Ele estava triste”, mostre com ação: “Ele dobrou o bilhete com dedos trêmulos e desviou o olhar.” n° 7
 
 
-<<<<<<< HEAD
 Corrija no máximo **1/3 de todos os blocos**.  
-=======
-Corrija no máximo **1/3 de todos os blocos*.  
->>>>>>> 981c993af06e6a1871784204ac7a247cb8c17a52
 **Apenas blocos com sugestão devem aparecer na resposta.**  
 
 Texto:
@@ -602,7 +598,7 @@ Reescreva o texto abaixo aplicando as sugestões de melhoria indicadas em cada b
 2. **Remover a numeração dos blocos** (ex: "1", "2"...);
 3. Unificar o texto em parágrafos contínuos e coesos;
 4. Preservar o estilo original do autor;
-5. Marcar com **_negrito&italico_** todas as palavras ou trechos que foram modificados;
+5. Marcar com _italico_ todas as palavras ou trechos que foram modificados;
 6. Não adicione explicações — apenas devolva o novo texto já melhorado.
 
 ---

@@ -801,113 +801,32 @@ function trocarModoChat(modo) {
   head.appendChild(novoJs);
 }
 
-function atualizarVisualizacao() {
-  const botoesModificaveis = document.querySelectorAll('.botao-modificavel');
-  const botoesFixos = document.querySelectorAll('.botao-fixo-tarefa');
-  const modoPC = document.querySelectorAll('.modo-pc');
-  const modoCelular = document.querySelectorAll('.modo-celular');
-  const botaoCelular = document.getElementById("botaoToggleModoCelular");
-  const botaoModo = document.getElementById("botao-modo-geral");
+// BOTÃO ALTERNANCIA TAREFA📌/✍ESCRITOR *********************************************************************************
 
-  // Visualização geral
-  if (modoCelularAtivo) {
-    modoPC.forEach(el => el.style.display = 'none');
-    modoCelular.forEach(el => el.style.display = 'flex');
-    botaoCelular.innerText = "💻";
-  } else {
-    modoPC.forEach(el => el.style.display = '');
-    modoCelular.forEach(el => el.style.display = 'none');
-    botaoCelular.innerText = "📲";
-  }
+  let modoTarefaAtivo = false;
 
-  // Botões internos (só aplicados se NÃO estiver no modo celular)
-  if (!modoCelularAtivo) {
-    if (modoTarefaAtivo) {
+  function trocarModo() {
+    const botoesModificaveis = document.querySelectorAll('.botao-modificavel');
+    const botoesFixos = document.querySelectorAll('.botao-fixo-tarefa');
+    const botaoModo = document.querySelector('#botao-modo-geral');
+
+    if (!modoTarefaAtivo) {
       botoesModificaveis.forEach(btn => btn.style.display = 'none');
       botoesFixos.forEach(btn => btn.style.display = 'inline-block');
       botaoModo.innerHTML = 'Modo Escritor ✍';
     } else {
       botoesModificaveis.forEach(btn => btn.style.display = 'inline-block');
-<<<<<<< HEAD
-      botaoModo.innerHTML = 'Modo Tarefa 📲';
-=======
-      botoesFixos.forEach(btn => btn.style.display = 'inline-block');
       botaoModo.innerHTML = 'Modo Tarefa 📌';
->>>>>>> 981c993af06e6a1871784204ac7a247cb8c17a52
     }
+
+    modoTarefaAtivo = !modoTarefaAtivo;
   }
-}
-
-
-
-// BOTÃO ALTERNANCIA TAREFA📌/✍ESCRITOR *********************************************************************************
-
-let modoTarefaAtivo = false;
-
-function trocarModo() {
-  const botoesModificaveis = document.querySelectorAll('.botao-modificavel');
-  const botoesFixos = document.querySelectorAll('.botao-fixo-tarefa');
-  const botaoModo = document.querySelector('#botao-modo-geral');
-
-  // 👉 Se estiver no modo celular, não altera visualização
-  if (modoCelularAtivo) {
-    modoTarefaAtivo = !modoTarefaAtivo; // apenas alterna lógica interna
-    botaoModo.innerHTML = modoTarefaAtivo ? 'Modo Escritor ✍' : 'Modo Tarefa 📌';
-    return;
-  }
-
+  
+  window.addEventListener("DOMContentLoaded", () => {
   if (!modoTarefaAtivo) {
-    // Entrar no modo tarefa
-    botoesModificaveis.forEach(btn => btn.style.display = 'none');
-    botoesFixos.forEach(btn => btn.style.display = 'inline-block');
-    botaoModo.innerHTML = 'Modo Escritor ✍';
-  } else {
-    // Voltar ao modo completo
-    botoesModificaveis.forEach(btn => btn.style.display = 'inline-block');
-    botaoModo.innerHTML = 'Modo Tarefa 📌';
+    trocarModo();
   }
-
-  modoTarefaAtivo = !modoTarefaAtivo;
-}
-
-// MODO CELULAR *****************************************************************************************************************
-
-let modoCelularAtivo = false;
-
-function alternarModoCelular() {
-  const modoPC = document.querySelectorAll('.modo-pc');
-  const modoCelular = document.querySelectorAll('.modo-celular');
-  const botao = document.getElementById("botaoToggleModoCelular");
-
-  if (!modoCelularAtivo) {
-    modoPC.forEach(el => el.style.display = 'none');
-    modoCelular.forEach(el => el.style.display = 'flex');
-    botao.innerText = "💻";
-    modoCelularAtivo = true;
-  } else {
-    modoPC.forEach(el => {
-      el.style.display = ''; // Restaurar
-      el.querySelectorAll('.toolbar-button').forEach(btn => btn.style.display = 'inline-block');
-    });
-    modoCelular.forEach(el => el.style.display = 'none');
-    botao.innerText = "📲";
-    modoCelularAtivo = false;
-  }
-}
-
-function ajustarClassesModoCelular(forcarComo = "modificavel") {
-  const botoesCelular = document.querySelectorAll('.modo-celular .toolbar-button');
-
-  botoesCelular.forEach(botao => {
-    botao.classList.remove("botao-fixo-tarefa", "botao-modificavel");
-
-    if (forcarComo === "fixo") {
-      botao.classList.add("botao-fixo-tarefa");
-    } else {
-      botao.classList.add("botao-modificavel");
-    }
-  });
-}
+});
 
 document.getElementById("editor").addEventListener("keydown", function (event) {
   // Se tecla for Enter e Shift estiver pressionado, ativa gerarTarefa
