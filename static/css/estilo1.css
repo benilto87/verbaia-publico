@@ -1,0 +1,482 @@
+/*
+ * Versão atualizada do CSS com melhorias de responsividade.
+ * O layout foi otimizado para funcionar bem em desktops e celulares.
+ * As principais mudanças estão no uso de media queries e na refatoração
+ * do layout dos blocos de texto para usar Flexbox, que é mais robusto.
+ */
+
+:root {
+    --bg: #fdfdfd;
+    --primary: #2c3e50; /* Cor primária */
+    --accent: #3498db; /* Cor de destaque (azul) */
+    --text: #2c3e50; /* Cor do texto principal */
+    --highlight: #27ae60; /* Cor para destaque/sucesso (verde) */
+    --error-color: #e74c3c; /* Cor para símbolos de erro (vermelho) */
+    --border-color: #ddd; /* Cor padrão da borda */
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    max-width: 820px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: var(--primary);
+}
+
+/* BOTÕES DO SISTEMA ************************************************** */
+
+#toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+}
+
+.toolbar-button {
+    background: var(--accent);
+    border: 1px solid #c7a94e;      
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 0.6rem 0.9rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3); 
+}
+
+.toolbar-button:hover {
+    background: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.toolbar-button:active {
+    transform: scale(0.98);
+}
+
+/* CLASSES DE BOTÕES ESPECÍFICAS (sem alterações) */
+.botao-amarelo {
+  background-color: #8FBC8F;
+  color: #xxff99;
+  border: 1px solid #c7a94e;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3);
+}
+
+.botao-amarelo:hover {
+  background-color: #e6c678;
+  color: #3a2400;
+  border-color: #b8942f;
+}
+
+.botao-marcas {
+  background-color: #20B2AA;
+  color: #4a2f00;
+  border: 1px solid #c7a94e;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3);
+}
+
+.botao-marcas:hover {
+  background-color: #e6c678;
+  color: #3a2400;
+  border-color: #b8942f;
+}
+
+.botao-especial {
+  background-color: #F08080;
+  color: #4a2f00;
+  border: 1px solid #c7a94e;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3);
+}
+
+.botao-especial:hover {
+  background-color: #e6c678;
+  color: #3a2400;
+  border-color: #b8942f;
+}
+
+.botao-turquesa {
+  background-color: #00DED1;
+  color: #4a2f00;
+  border: 1px solid #c7a94e;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3);
+}
+
+.botao-turquesa:hover {
+  background-color: #e6c678;
+  color: #3a2400;
+  border-color: #b8942f;
+}
+
+.botao-dourado {
+  background-color: #f2db9c;
+  color: #4a2f00;
+  border: 1px solid #c7a94e;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(74, 47, 0, 0.3);
+}
+
+.botao-dourado:hover {
+  background-color: #e6c678;
+  color: #3a2400;
+  border-color: #b8942f;
+}
+
+/* EDITOR CONTEINER ****************************************************************************************************** */
+.editor-container {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    padding: 1rem;
+    min-height: 300px;
+    max-height: 580px;
+    overflow-y: auto;
+    position: relative;
+    transition: max-height 0.3s ease-out; 
+}
+
+#editor {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    line-height: 1.7;
+    outline: none;
+}
+
+/* SENTENCE / COMENTÁRIOS  ******************************************************************************************* */
+
+.sentence-group {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+    border-radius: 6px;
+    display: flex; 
+    align-items: flex-start;
+}
+
+.sentence-group:hover {
+    background-color: #f3f8fc;
+}
+
+.number-marker {
+    color: var(--accent);
+    font-weight: bold;
+    margin-right: 1rem;
+    border-right: 2px solid var(--border-color);
+    padding-right: 1rem;
+    flex-shrink: 0;
+    width: 3rem;
+    text-align: right;
+    line-height: 1.7;
+    user-select: none;
+}
+
+.text-group {
+    flex-grow: 1; 
+    min-height: 1.7em;
+    outline: none;
+    line-height: 1.7;
+    padding-left: 5px;
+}
+
+.scene-marker,
+.processed-symbol,
+.processed-comment {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.scene-marker {
+    color: var(--accent);
+    background: #eef6fb;
+    border-left: 3px solid var(--accent);
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.processed-symbol {
+    color: var(--error-color);
+    background: #fff5f5;
+    border-left: 3px solid var(--error-color);
+}
+
+.processed-comment {
+    color: var(--highlight);
+    background: #f0fff4;
+    font-style: italic;
+    border-left: 3px solid var(--highlight);
+}
+
+#loading-simbol {
+    text-align: center;
+    font-style: italic;
+    color: var(--accent);
+    margin-top: 10px;
+}
+
+#simbol-feedback {
+    text-align: center;
+    color: var(--error-color);
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* CHAT BOTÕES E POSICIONAMENTO ********************************************************************************************** */
+
+#modo-chat-selector {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  gap: 8px;
+}
+
+#modo-chat-selector button {
+  font-size: 22px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.1s ease-in-out;
+}
+
+#modo-chat-selector button:active {
+  transform: scale(0.95) translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#botoesFixosEsquerda {
+  position: fixed;
+  top: 10px;
+  left: 12px;
+  z-index: 9999;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: transparent;
+  padding: 0;
+}
+
+/* BOTÃO SAIR */
+.botao-sair {
+    position: fixed;
+    bottom: 10px;
+    left: 12px;
+    color: black;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease;
+}
+
+.botao-sair:hover {
+    background-color: #e60000;
+}
+
+<<<<<<< HEAD
+/* BOTÃO BUSCA */
+=======
+/* MODO CELULAR ********************* MODO CELULAR ***************************** MODO CELULAR ******************************* */
+
+.botao-modo-celular {
+	position: fixed;
+    bottom: 10px;
+    left: 100px;
+    color: black;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease;
+
+.botao-modo-celular:hover {
+    background-color: #e60000;
+}
+
+.botao-modo-tarefa {
+  position: fixed;
+  top: 10px;
+  right: 60px;
+  background: none;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  z-index: 999;
+}
+
+
+
+/* 🔍  BOTÃO BUSCA 🔍  ******************************** 🔍  BOTÃO BUSCA 🔍 ************************************************ */
+>>>>>>> 981c993af06e6a1871784204ac7a247cb8c17a52
+#busca-local {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f5f5f5;
+  padding: 6px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#inputBusca {
+  padding: 1px 1px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  width: 180px;
+  background-color: #f8f8f8;
+  color: #222;
+  box-shadow: inset 0 0 0 0px #111;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+#inputBusca:focus {
+  box-shadow: inset 0 0 0 0px #f5f5f5;
+  outline: none;
+}
+
+#busca-local button {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  padding: 1px;
+  color: #555;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease-in-out;
+}
+
+#busca-local button:hover {
+  background: #e0e0e0;
+}
+
+/* ========================================================= */
+/* --- MEDIA QUERY PARA CELULARES (TELA PEQUENA) --- */
+/* ========================================================= */
+@media (max-width: 768px) {
+    /* Ajustes no corpo para telas menores */
+    body {
+        max-width: 100%;
+        margin: 1rem 0.5rem;
+        padding: 0;
+    }
+
+    /* Ajustes na barra de ferramentas para melhor uso do espaço */
+    #toolbar {
+        flex-direction: row;
+        gap: 0.2rem;
+        margin-bottom: 1rem;
+        justify-content: center;
+    }
+
+    .toolbar-button {
+        flex-grow: 1;
+        font-size: 0.75rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    /* Otimizando o contêiner do editor para celulares */
+    .editor-container {
+        max-height: 40vh;
+        min-height: 200px;
+        padding: 0.8rem;
+    }
+
+    #editor {
+        font-size: 0.9rem;
+    }
+    
+    /* Layout dos botões fixos no canto superior esquerdo */
+    #botoesFixosEsquerda {
+        top: auto;
+        left: 0;
+        bottom: 1rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Escondendo a barra de rolagem dos botões fixos */
+    #botoesFixosEsquerda::-webkit-scrollbar {
+        display: none;
+    }
+    #botoesFixosEsquerda {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Ocultando botões extras se necessário em telas menores */
+    .toolbar-button.hide-on-mobile {
+        display: none;
+    }
+  
+/* TIRE ESSA PARTE PARA VOLTAR COM OS BOTÕES SELEÇÃO DE MODO NA VERSÃO DE CELULAR */
+  
+    /* Reposicionando o seletor de chat para evitar sobreposição */
+    #modo-chat-selector {
+        display: none;
+    }
+    
+/* TIRE ESSA PARTE PARA VOLTAR COM OS BOTÕES SELEÇÃO DE MODO NA VERSÃO DE CELULAR */	
+	
+    /* Ajustes para o botão de busca */
+    #busca-local {
+        top: 1rem;
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 6px;
+    }
+    #inputBusca {
+        width: 100%;
+    }
+
+    /* --- NOVO: OCULTA O BOTÃO SAIR NA VERSÃO MOBILE --- */
+    .botao-sair {
+        display: none;
+    }
+    
+    /* NOVO: Oculta o chat na versão mobile */
+    .chat-panel {
+      display: none;
+    }
+}
