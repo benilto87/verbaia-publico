@@ -7,7 +7,7 @@
   <!-- ✅ CSS externo organizado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo1.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/abas.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chats/chat_romantico.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chats/chat_escuro.css') }}">
 </head>
 <body>
  <form action="{{ url_for('logout') }}" method="get" style="position: absolute; top: 10px; right: 10px;">
@@ -19,7 +19,7 @@
   <button onclick="fecharBusca()">✖</button>
 </div>
 
-   <h1>👁‍🗨 VERBA IA</h1>
+   <h1>👁‍🗨 VERBA IA...</h1>
 
     <div id="toolbar">
 	
@@ -40,7 +40,7 @@
   font-size: 0.95rem;
   line-height: 1.5;
 ">
-    <button onclick="fecharInspiracao()" style="
+  <button onclick="fecharInspiracao()" style="
     position: absolute;
     top: 6px;
     right: 8px;
@@ -51,27 +51,15 @@
     cursor: pointer;
     transition: color 0.2s ease;
   " title="Fechar">✖</button>
-
-  <button onclick="minimizarInspiracao()" style="
-    position: absolute;
-    top: 6px;
-    right: 32px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    color: #888;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  " title="Minimizar">➖</button>
   
-  <strong>🌺 Olhar da Flávia:</strong>
+  <strong>🌺 Inspiração da Flávia:</strong>
   
   <div id="inspiracao-texto" style="
     margin-top: 6px;
-    overflow-y: visible;
-    max-height: none;
+    max-height: 1000px;
+    overflow-y: auto;
     padding-right: 3px;
-"></div>
+  "></div>
 </div>
 	
 <!-- Botões principais -->
@@ -88,7 +76,7 @@
 </div>
 
 
-<button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto()" title="Corrigir Texto">✅</button>
+<button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto()" title="Corrigir Texto">✨✅</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="aplicarNegrito()" title="Negrito (Ctrl+B)">𝗡</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="aplicarItalico()" title="Itálico (Ctrl+I)">𝑰</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="alinharEsquerda()" title="Alinhar à Esquerda">⇤</button>
@@ -101,7 +89,7 @@
 <button id="copyButton" class="toolbar-button botao-fixo-tarefa" onclick="copyText()" title="Copiar Texto">📋</button> 
 
 <!-- Botões de numeração e marcas -->
-<button class="toolbar-button botao-fixo-tarefa" onclick="numberSentences()" title="Numerar Frases">#</button>
+<button class="toolbar-button botao-modificavel" onclick="numberSentences()" title="Numerar Frases">#</button>
 <button class="toolbar-button botao-fixo-tarefa" onclick="numberSentencesBy3()" title="Numerar por blocos de 3 frases">#3</button>
 <button class="toolbar-button botao-modificavel" onclick="numberSentencesBy4()" title="Numerar por blocos de 4 frases">#4</button>
 <button class="toolbar-button botao-fixo-tarefa" onclick="removeNumbering()" title="Remover Numeração">⌫ #</button>
@@ -110,8 +98,8 @@
 <!-- Botões de análise -->
 <button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analisarDicasIA()" title="Análise de Fluidez">🌺</button>
 <button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analyzeFluidezIA()" title="Análise de Fluidez">🚨</button>
-<button class="toolbar-button botao-modificavel botao-marcas" onclick="executarMarcadorDeCenas()" title="Marcar Cenas Principais">🎬</button>
-<button class="toolbar-button botao-modificavel botao-marcas" onclick="analyzeWithAI()" title="Analisar com IA">💎 🌌 🥈</button>	
+<button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="executarMarcadorDeCenas()" title="Marcar Cenas Principais">🎬</button>
+<button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analyzeWithAI()" title="Analisar com IA">💎 🌌 🥈</button>	
 <button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto2()" title="Analisar com IA">🌓 OK</button>		
 
 <!-- Botões da Flávia -->
@@ -171,7 +159,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/funcoes_ordinarias.js') }}"></script>
-<script src="{{ url_for('static', filename='js/chats/chat_romantico.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chats/chat_edtorial.js') }}"></script>
 <script src="{{ url_for('static', filename='js/funcoes_ia.js') }}"></script>
 
 </body>
