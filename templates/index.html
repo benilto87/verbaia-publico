@@ -7,7 +7,7 @@
   <!-- ✅ CSS externo organizado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo1.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/abas.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chats/chat_escuro.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chats/chat_romantico.css') }}">
 </head>
 <body>
  <form action="{{ url_for('logout') }}" method="get" style="position: absolute; top: 10px; right: 10px;">
@@ -19,7 +19,7 @@
   <button onclick="fecharBusca()">✖</button>
 </div>
 
-   <h1>👁‍🗨 VERBA IA...</h1>
+   <h1>👁‍🗨 VERBA IA</h1>
 
     <div id="toolbar">
 	
@@ -40,7 +40,7 @@
   font-size: 0.95rem;
   line-height: 1.5;
 ">
-  <button onclick="fecharInspiracao()" style="
+    <button onclick="fecharInspiracao()" style="
     position: absolute;
     top: 6px;
     right: 8px;
@@ -51,15 +51,27 @@
     cursor: pointer;
     transition: color 0.2s ease;
   " title="Fechar">✖</button>
+
+  <button onclick="minimizarInspiracao()" style="
+    position: absolute;
+    top: 6px;
+    right: 32px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  " title="Minimizar">➖</button>
   
-  <strong>🌺 Inspiração da Flávia:</strong>
+  <strong>🌺 Olhar da Flávia:</strong>
   
   <div id="inspiracao-texto" style="
     margin-top: 6px;
-    max-height: 730px;
-    overflow-y: auto;
+    overflow-y: visible;
+    max-height: none;
     padding-right: 3px;
-  "></div>
+"></div>
 </div>
 	
 <!-- Botões principais -->
@@ -76,7 +88,7 @@
 </div>
 
 
-<button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto()" title="Corrigir Texto">✨✅</button>
+<button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto()" title="Corrigir Texto">✅</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="aplicarNegrito()" title="Negrito (Ctrl+B)">𝗡</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="aplicarItalico()" title="Itálico (Ctrl+I)">𝑰</button>
 <button class="toolbar-button botao-modificavel botao-turquesa" onclick="alinharEsquerda()" title="Alinhar à Esquerda">⇤</button>
@@ -104,8 +116,8 @@
 
 <!-- Botões da Flávia -->
 <button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia()" title="Inspiração da Flávia">👁‍🗨</button>		
-<button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia2()" title="Reflexão da Flávia">💡</button>
-<button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia3()" title="Leitora Virtual">👸</button>
+<button class="toolbar-button botao-modificavel botao-dourado" onclick="inspirarComFlavia2()" title="Reflexão da Flávia">💡</button>
+<button class="toolbar-button botao-modificavel botao-dourado" onclick="inspirarComFlavia3()" title="Leitora Virtual">👸</button>
 <button class="toolbar-button botao-fixo-tarefa botao-especial" onclick="gerarRascunho()" title="Gerar Rascunho">📜...</button>
 
 <!-- Pedido IA -->
@@ -118,7 +130,7 @@
 <div id="modo-chat-selector">
   <button class="botao-modificavel" onclick="trocarModoChat('romantico')" style="background: none; border: none; font-size: 1.2em; cursor: pointer;">💖</button>
   <button class="botao-modificavel" onclick="trocarModoChat('edtorial')" style="background: none; border: none; font-size: 1.2em; cursor: pointer;">📘</button>
-  <button id="botao-modo-geral" onclick="trocarModo()" style="background: none; border: none; font-size: 1.0em; cursor: pointer;">Modo Tarefa 📲</button>
+  <button id="botao-modo-geral" onclick="trocarModo()" style="background: none; border: none; font-size: 1.0em; cursor: pointer;">Modo Tarefa 📌</button>
   </div>	
 		
 			</div>
@@ -159,7 +171,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/funcoes_ordinarias.js') }}"></script>
-<script src="{{ url_for('static', filename='js/chats/chat_edtorial.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chats/chat_romantico.js') }}"></script>
 <script src="{{ url_for('static', filename='js/funcoes_ia.js') }}"></script>
 
 </body>

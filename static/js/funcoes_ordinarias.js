@@ -82,6 +82,50 @@ function carregarConteudoAtual() {
   }
 }
 
+// INSERIR E REMOVER MARCAÇÕES ❌ *****************************************************************************************************************************
+
+function inserirMarcacaoNoBloco(numero, textoIA) {
+  const sentenceGroups = document.querySelectorAll(".sentence-group");
+
+  // Encontrar o grupo correspondente ao número
+  const grupo = sentenceGroups[numero - 1];
+  if (!grupo) {
+    console.warn("❌ Bloco não encontrado:", numero);
+    return;
+  }
+
+  const textGroup = grupo.querySelector(".text-group");
+  if (!textGroup) {
+    console.warn("❌ text-group não encontrado no bloco:", numero);
+    return;
+  }
+
+  // Criar o id único da marcação
+  const idMarcacao = `marcacao-${Date.now()}`;
+
+  // Criar o elemento da marcação com botão de fechar
+  const span = document.createElement("span");
+  span.className = "processed-comment marcacao-com-fechar";
+  span.id = idMarcacao;
+  span.innerHTML = `
+    ${textoIA}
+    <button class="marcacao-fechar" onclick="removerMarcacao('${idMarcacao}')">✖</button>
+  `;
+
+  // Inserir dentro do .text-group
+  textGroup.appendChild(span);
+  salvarConteudoAtual();
+}
+
+function removerMarcacao(id) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.remove();
+  }
+}
+
+
+
 // NEGRITO E ITALICO N&I E ALINHAMENTOS 📍************************************************************************************************
 
 function aplicarNegrito() {
@@ -515,7 +559,7 @@ function numberSentences() {
         // Cria o marcador de número
         const numberSpan = document.createElement("span");
         numberSpan.className = "number-marker";
-        numberSpan.textContent = i + 1;
+        numberSpan.innerHTML = `${i + 1}<span class="separador">°</span>`;
 
         // Cria o contêiner do texto editável com o HTML preservado
         const textSpan = document.createElement("span");
@@ -596,7 +640,7 @@ function numberSentencesBy3() {
 
         const numberSpan = document.createElement("span");
         numberSpan.className = "number-marker";
-        numberSpan.textContent = groupCount++;
+        numberSpan.innerHTML = `${groupCount++}<span class="separador">°</span>`;
 
         const textSpan = document.createElement("span");
         textSpan.className = "text-group";
@@ -675,7 +719,7 @@ function numberSentencesBy4() {
 
         const numberSpan = document.createElement("span");
         numberSpan.className = "number-marker";
-        numberSpan.textContent = groupCount++;
+        numberSpan.innerHTML = `${groupCount++}<span class="separador">°</span>`;
 
         const textSpan = document.createElement("span");
         textSpan.className = "text-group";
@@ -753,50 +797,107 @@ function removerFormatacaoSelecao() {
   }
 }
 
-// FECHAR TABELA INSPIRAÇÃO ********************************************************************************************
+// FECHAR E MINIMIZAR TABELA INSPIRAÇÃO 🌺********************************************************************************************
 
 function fecharInspiracao() {
   document.getElementById("inspiracao-lousa").style.display = "none";
 }
 
-// CHAT ALTERNADO 💬💬 ************************************************************************************************
+function minimizarInspiracao() {
+  const lousa = document.getElementById("inspiracao-lousa");
+  const conteudo = document.getElementById("inspiracao-texto");
+  const titulo = lousa.querySelector("strong");
+
+  const estaMinimizado = conteudo.style.display === "none";
+
+  if (estaMinimizado) {
+    conteudo.style.display = "block";
+    titulo.innerHTML = "🌺 Inspiração da Flávia:";
+    lousa.classList.remove("minimizado");
+  } else {
+    conteudo.style.display = "none";
+    titulo.innerHTML = "🌺 (minimizado)";
+    lousa.classList.add("minimizado");
+  }
+}
+
+
+function permitirArrastarInspiracao() {
+  const lousa = document.getElementById("inspiracao-lousa");
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  function startDrag(e) {
+    isDragging = true;
+    const rect = lousa.getBoundingClientRect();
+    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+    offsetX = clientX - rect.left;
+    offsetY = clientY - rect.top;
+
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", stopDrag);
+    document.addEventListener("touchmove", drag, { passive: false });
+    document.addEventListener("touchend", stopDrag);
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+
+    e.preventDefault();
+    const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type === "touchmove" ? e.touches[0].clientY : e.clientY;
+
+    lousa.style.left = `${clientX - offsetX}px`;
+    lousa.style.top = `${clientY - offsetY}px`;
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseup", stopDrag);
+    document.removeEventListener("touchmove", drag);
+    document.removeEventListener("touchend", stopDrag);
+  }
+
+  lousa.addEventListener("mousedown", startDrag);
+  lousa.addEventListener("touchstart", startDrag);
+}
+
+document.addEventListener("DOMContentLoaded", permitirArrastarInspiracao);
+
+
+// CHAT ALTERNADO **********************************************************************************************************
 function trocarModoChat(modo) {
+  // Remove estilos e scripts antigos
   const head = document.head;
 
-  // Remove CSS e JS anteriores se existirem
+  // Remove CSS anterior se existir
   const cssAnterior = document.getElementById('chat-css');
   if (cssAnterior) cssAnterior.remove();
 
+  // Remove JS anterior se existir
   const jsAnterior = document.getElementById('chat-js');
   if (jsAnterior) jsAnterior.remove();
 
-  // Cria novo CSS e JS
+  // Cria novo <link> para CSS
   const novoCss = document.createElement('link');
   novoCss.rel = 'stylesheet';
   novoCss.id = 'chat-css';
 
+  // Cria novo <script> para JS
   const novoJs = document.createElement('script');
   novoJs.id = 'chat-js';
 
   if (modo === 'romantico') {
     novoCss.href = "/static/css/chats/chat_romantico.css";
     novoJs.src  = "/static/js/chats/chat_romantico.js";
-
-    // 🌸 Aplica imagem inicial de fundo direto no painel
-    const chatPanel = document.getElementById("chat-panel");
-    if (chatPanel) {
-      chatPanel.style.backgroundImage = `
-        linear-gradient(180deg, rgba(255, 192, 203, 0.15), rgba(138, 43, 226, 0.15)),
-        url('/static/img/flavia.jpg')`;
-      chatPanel.style.opacity = '1';
-    }
-
   } else if (modo === 'edtorial') {
     novoCss.href = "/static/css/chats/chat_escuro.css";
     novoJs.src  = "/static/js/chats/chat_edtorial.js";
   }
 
-  // Aplica no <head>
+  // Adiciona ao <head>
   head.appendChild(novoCss);
   head.appendChild(novoJs);
 }
@@ -836,3 +937,10 @@ document.getElementById("editor").addEventListener("keydown", function (event) {
   }
 });
 
+// CHAT MINIMIZADO VERSÃO MOBILE
+window.addEventListener("load", () => {
+  const panel = document.getElementById("chat-panel");
+  if (window.innerWidth <= 768) {
+    panel.classList.add("minimized");
+  }
+});
