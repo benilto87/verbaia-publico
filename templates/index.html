@@ -89,7 +89,7 @@
 <button id="copyButton" class="toolbar-button botao-fixo-tarefa" onclick="copyText()" title="Copiar Texto">📋</button> 
 
 <!-- Botões de numeração e marcas -->
-<button class="toolbar-button botao-modificavel" onclick="numberSentences()" title="Numerar Frases">#</button>
+<button class="toolbar-button botao-fixo-tarefa" onclick="numberSentences()" title="Numerar Frases">#</button>
 <button class="toolbar-button botao-fixo-tarefa" onclick="numberSentencesBy3()" title="Numerar por blocos de 3 frases">#3</button>
 <button class="toolbar-button botao-modificavel" onclick="numberSentencesBy4()" title="Numerar por blocos de 4 frases">#4</button>
 <button class="toolbar-button botao-fixo-tarefa" onclick="removeNumbering()" title="Remover Numeração">⌫ #</button>
@@ -98,14 +98,14 @@
 <!-- Botões de análise -->
 <button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analisarDicasIA()" title="Análise de Fluidez">🌺</button>
 <button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analyzeFluidezIA()" title="Análise de Fluidez">🚨</button>
-<button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="executarMarcadorDeCenas()" title="Marcar Cenas Principais">🎬</button>
-<button class="toolbar-button botao-fixo-tarefa botao-marcas" onclick="analyzeWithAI()" title="Analisar com IA">💎 🌌 🥈</button>	
+<button class="toolbar-button botao-modificavel botao-marcas" onclick="executarMarcadorDeCenas()" title="Marcar Cenas Principais">🎬</button>
+<button class="toolbar-button botao-modificavel botao-marcas" onclick="analyzeWithAI()" title="Analisar com IA">💎 🌌 🥈</button>	
 <button class="toolbar-button botao-fixo-tarefa botao-turquesa" onclick="corrigirTexto2()" title="Analisar com IA">🌓 OK</button>		
 
 <!-- Botões da Flávia -->
 <button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia()" title="Inspiração da Flávia">👁‍🗨</button>		
-<button class="toolbar-button botao-modificavel botao-dourado" onclick="inspirarComFlavia2()" title="Reflexão da Flávia">💡</button>
-<button class="toolbar-button botao-modificavel botao-dourado" onclick="inspirarComFlavia3()" title="Leitora Virtual">👸</button>
+<button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia2()" title="Reflexão da Flávia">💡</button>
+<button class="toolbar-button botao-fixo-tarefa botao-dourado" onclick="inspirarComFlavia3()" title="Leitora Virtual">👸</button>
 <button class="toolbar-button botao-fixo-tarefa botao-especial" onclick="gerarRascunho()" title="Gerar Rascunho">📜...</button>
 
 <!-- Pedido IA -->
@@ -118,7 +118,7 @@
 <div id="modo-chat-selector">
   <button class="botao-modificavel" onclick="trocarModoChat('romantico')" style="background: none; border: none; font-size: 1.2em; cursor: pointer;">💖</button>
   <button class="botao-modificavel" onclick="trocarModoChat('edtorial')" style="background: none; border: none; font-size: 1.2em; cursor: pointer;">📘</button>
-  <button id="botao-modo-geral" onclick="trocarModo()" style="background: none; border: none; font-size: 1.0em; cursor: pointer;">Modo Tarefa 📌</button>
+  <button id="botao-modo-geral" onclick="trocarModo()" style="background: none; border: none; font-size: 1.0em; cursor: pointer;">Modo Tarefa 📲</button>
   </div>	
 		
 			</div>

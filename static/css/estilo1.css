@@ -228,6 +228,22 @@ h1 {
     border-left: 3px solid var(--highlight);
 }
 
+/* ******************************************************************************************************** */
+
+#loading-simbol {
+    text-align: center;
+    font-style: italic;
+    color: var(--accent);
+    margin-top: 10px;
+}
+
+#simbol-feedback {
+    text-align: center;
+    color: var(--error-color);
+    font-style: italic;
+    margin-top: 5px;
+}
+
 /* GERAR RASCUNHO*/
 .sentence-group {
   margin-bottom: 12px;
@@ -243,22 +259,6 @@ h1 {
   color: #ff4d6d;
   font-weight: bold;
   margin-right: 8px;
-}
-
-/* ******************************************************************************************************** */
-
-#loading-simbol {
-    text-align: center;
-    font-style: italic;
-    color: var(--accent);
-    margin-top: 10px;
-}
-
-#simbol-feedback {
-    text-align: center;
-    color: var(--error-color);
-    font-style: italic;
-    margin-top: 5px;
 }
 
 /* CHAT BOTÕES E POSICIONAMENTO ********************************************************************************************** */
@@ -429,7 +429,7 @@ h1 {
     /* Otimizando o contêiner do editor para celulares */
     .editor-container {
         max-height: 40vh;
-        min-height: 400px;
+        min-height: 500px;
         padding: 0.8rem;
     }
 
