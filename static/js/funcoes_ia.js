@@ -732,7 +732,7 @@ function analyzeFluidezIA() {
       const sugestao = sugestoes[numero];
 
       if (sugestao) {
-        const idMarcacao = `marcacao-${Date.now()}`;
+        const idMarcacao = `marcacao-${numero}-${Math.random().toString(36).substr(2, 6)}`;
         const span = document.createElement("span");
         span.innerHTML = `
         <span class="processed-symbol marcacao-com-fechar" id="${idMarcacao}">
@@ -815,7 +815,7 @@ function analisarDicasIA() {
       const sugestao = sugestoes[numero];
 
       if (sugestao) {
-        const idMarcacao = `marcacao-${Date.now()}`;
+        const idMarcacao = `marcacao-${numero}-${Math.random().toString(36).substr(2, 6)}`;
         const span = document.createElement("span");
         span.innerHTML = `
         <span class="processed-comment marcacao-com-fechar" id="${idMarcacao}">
