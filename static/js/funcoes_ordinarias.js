@@ -87,7 +87,6 @@ function carregarConteudoAtual() {
 function inserirMarcacaoNoBloco(numero, textoIA) {
   const sentenceGroups = document.querySelectorAll(".sentence-group");
 
-  // Encontrar o grupo correspondente ao número
   const grupo = sentenceGroups[numero - 1];
   if (!grupo) {
     console.warn("❌ Bloco não encontrado:", numero);
@@ -100,19 +99,16 @@ function inserirMarcacaoNoBloco(numero, textoIA) {
     return;
   }
 
-  // Criar o id único da marcação
   const idMarcacao = `marcacao-${Date.now()}`;
 
-  // Criar o elemento da marcação com botão de fechar
   const span = document.createElement("span");
-  span.className = "processed-comment marcacao-com-fechar";
-  span.id = idMarcacao;
   span.innerHTML = `
-    ${textoIA}
+  <div class="processed-comment-scriptus marcacao-com-fechar" id="${idMarcacao}">
+    <div class="corpo-marcacao">${sugestao.replace(/\n/g, "<br>")}</div>
     <button class="marcacao-fechar" onclick="removerMarcacao('${idMarcacao}')">✖</button>
-  `;
+  </div>
+`;
 
-  // Inserir dentro do .text-group
   textGroup.appendChild(span);
   salvarConteudoAtual();
 }
