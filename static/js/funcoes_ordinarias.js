@@ -87,6 +87,7 @@ function carregarConteudoAtual() {
 function inserirMarcacaoNoBloco(numero, textoIA) {
   const sentenceGroups = document.querySelectorAll(".sentence-group");
 
+  // Encontrar o grupo correspondente ao número
   const grupo = sentenceGroups[numero - 1];
   if (!grupo) {
     console.warn("❌ Bloco não encontrado:", numero);
@@ -99,16 +100,19 @@ function inserirMarcacaoNoBloco(numero, textoIA) {
     return;
   }
 
+  // Criar o id único da marcação
   const idMarcacao = `marcacao-${Date.now()}`;
 
+  // Criar o elemento da marcação com botão de fechar
   const span = document.createElement("span");
+  span.className = "processed-comment marcacao-com-fechar";
+  span.id = idMarcacao;
   span.innerHTML = `
-  <div class="processed-comment-scriptus marcacao-com-fechar" id="${idMarcacao}">
-    <div class="corpo-marcacao">${sugestao.replace(/\n/g, "<br>")}</div>
+    ${textoIA}
     <button class="marcacao-fechar" onclick="removerMarcacao('${idMarcacao}')">✖</button>
-  </div>
-`;
+  `;
 
+  // Inserir dentro do .text-group
   textGroup.appendChild(span);
   salvarConteudoAtual();
 }
@@ -255,42 +259,80 @@ function fecharBusca() {
   limparDestaques();
 }
 
+// Escapa caracteres especiais do termo pra usar no RegExp
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function destacarBusca() {
   const termo = document.getElementById("inputBusca").value.trim();
-  if (termo.length < 1) return;
+
+  // ✅ Só continua se tiver pelo menos 2 letras
+  if (termo.length < 2) {
+    limparDestaques();
+    return;
+  }
 
   limparDestaques();
 
-  const grupos = document.querySelectorAll("#editor .text-group");
-  const regex = new RegExp(`(${termo})`, "gi");
+  const regex = new RegExp(escapeRegex(termo), "gi");
+  const roots = document.querySelectorAll("#editor .text-group");
 
-  grupos.forEach(group => {
-    const originalText = group.textContent;
-    const highlightedHTML = originalText.replace(regex, "<mark>$1</mark>");
-    group.innerHTML = highlightedHTML;
+  roots.forEach(root => highlightNode(root, regex));
+}
+
+
+// Percorre apenas nós de TEXTO e envolve os matches com <mark>
+function highlightNode(root, regex) {
+  const walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode(node) {
+        // não marcar dentro de <mark>
+        if (node.parentNode && node.parentNode.nodeName === "MARK") {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+
+  const toProcess = [];
+  while (walker.nextNode()) toProcess.push(walker.currentNode);
+
+  toProcess.forEach(textNode => {
+    const text = textNode.nodeValue;
+    let lastIndex = 0, m;
+    const frag = document.createDocumentFragment();
+
+    regex.lastIndex = 0;
+    while ((m = regex.exec(text)) !== null) {
+      if (m.index > lastIndex) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+      }
+      const mark = document.createElement("mark");
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      lastIndex = regex.lastIndex;
+    }
+    if (lastIndex < text.length) {
+      frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+
+    textNode.parentNode.replaceChild(frag, textNode);
   });
 }
 
 function limparDestaques() {
-  const grupos = document.querySelectorAll("#editor .text-group");
-  grupos.forEach(group => {
-    group.innerHTML = group.textContent; // Remove <mark> sem quebrar a estrutura
+  // “Desembrulha” apenas as <mark>, preservando todo o resto do HTML
+  document.querySelectorAll("#editor .text-group mark").forEach(mark => {
+    const parent = mark.parentNode;
+    while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+    parent.removeChild(mark);
+    parent.normalize(); // junta nós de texto adjacentes
   });
 }
-
-// 🔍 Atalhos de teclado
-document.addEventListener("keydown", function (e) {
-  // Ctrl + L → abrir busca
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "l") {
-    e.preventDefault(); // evita conflito com o navegador
-    abrirBusca();
-  }
-
-  // Esc → fechar busca
-  if (e.key === "Escape") {
-    fecharBusca();
-  }
-});
 
 // 🔍 ***************************************************************************************************************
 
@@ -577,77 +619,6 @@ function numberSentences() {
     });
 }
 
-// NUMBERSENTENCES 2 ***************************************************************************************************
-// NUMBERSENTENCES 2 ***************************************************************************************************
-function numberSentences2() {
-    const editor = document.getElementById("editor");
-
-    // 1. Pega o HTML original e o coloca em um contêiner temporário
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = editor.innerHTML;
-
-    // 2. Remove todos os grupos de numeração e anotações anteriores para limpeza
-    tempDiv.querySelectorAll('.sentence-group, .processed-symbol, .processed-comment, .scene-marker, .revisao-bloco').forEach(el => {
-        if (el.classList.contains('sentence-group')) {
-            const textGroup = el.querySelector('.text-group');
-            if (textGroup) {
-                el.replaceWith(textGroup);
-            }
-        } else {
-            el.remove();
-        }
-    });
-
-    // 3. Substitui reticências por marcador temporário
-    let htmlContent = tempDiv.innerHTML;
-    const tempEllipsisMarker = '__ELLIPSIS__';
-    htmlContent = htmlContent.replace(/\.\.\./g, tempEllipsisMarker);
-
-    let sentences = [];
-    let currentSentence = '';
-
-    const parts = htmlContent.split(/(<[^>]+>|[\.!?]|\n)/g);
-
-    parts.forEach(part => {
-        if (!part) return;
-
-        currentSentence += part;
-
-        if (['.', '!', '?'].includes(part.trim()) || part === '\n') {
-            let trimmed = currentSentence.trim();
-            if (trimmed) {
-                sentences.push(trimmed);
-            }
-            currentSentence = '';
-        }
-    });
-
-    if (currentSentence.trim()) {
-        sentences.push(currentSentence.trim());
-    }
-
-    // 4. Reconstroi o editor com numeração por sentença (não por grupo de 3)
-    editor.innerHTML = "";
-    sentences.forEach((sentenceHTML, i) => {
-        const finalSentenceHTML = sentenceHTML.replace(new RegExp(tempEllipsisMarker, 'g'), '...');
-
-        const group = document.createElement("div");
-        group.className = "sentence-group";
-
-        const numberSpan = document.createElement("span");
-        numberSpan.className = "number-marker";
-        numberSpan.innerHTML = `${i + 1}<span class="separador">°</span>`;
-
-        const textSpan = document.createElement("span");
-        textSpan.className = "text-group";
-        textSpan.setAttribute("contenteditable", "true");
-        textSpan.innerHTML = '\u2003' + finalSentenceHTML.trim(); // espaço inicial largo
-
-        group.appendChild(numberSpan);
-        group.appendChild(textSpan);
-        editor.appendChild(group);
-    });
-}
 
    // NUMBERSENTENCES 2 ***************************************************************************************************
 // NUMBERSENTENCES 2 ***************************************************************************************************
@@ -725,8 +696,8 @@ function numberSentencesBy2() {
     }
 }
 
-    // NUMBERSENTENCES 3 ***************************************************************************************************
-// NUMBERSENTENCES 3 ***************************************************************************************************
+   // NUMBERSENTENCES 2 ***************************************************************************************************
+// NUMBERSENTENCES 2 ***************************************************************************************************
 function numberSentencesBy3() {
     const editor = document.getElementById("editor");
     
@@ -805,6 +776,7 @@ function numberSentencesBy3() {
     }
 }
 
+     // REMOVENUMBER 🧺 *******************************************************************************************************
   // REMOVENUMBER 🧺 *******************************************************************************************************
 function removeNumbering() {
 
@@ -901,18 +873,22 @@ function permitirArrastarInspiracao() {
   let offsetX, offsetY;
 
   function startDrag(e) {
-    isDragging = true;
-    const rect = lousa.getBoundingClientRect();
-    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-    const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
-    offsetX = clientX - rect.left;
-    offsetY = clientY - rect.top;
+  // Só permite arrastar se a lousa estiver minimizada
+  if (!lousa.classList.contains("minimizado")) return;
 
-    document.addEventListener("mousemove", drag);
-    document.addEventListener("mouseup", stopDrag);
-    document.addEventListener("touchmove", drag, { passive: false });
-    document.addEventListener("touchend", stopDrag);
-  }
+  isDragging = true;
+  const rect = lousa.getBoundingClientRect();
+  const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+  const clientY = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+  offsetX = clientX - rect.left;
+  offsetY = clientY - rect.top;
+
+  document.addEventListener("mousemove", drag);
+  document.addEventListener("mouseup", stopDrag);
+  document.addEventListener("touchmove", drag, { passive: false });
+  document.addEventListener("touchend", stopDrag);
+}
+
 
   function drag(e) {
     if (!isDragging) return;
@@ -1017,3 +993,34 @@ window.addEventListener("load", () => {
     panel.classList.add("minimized");
   }
 });
+
+  async function enviarCorrecaoLiteraria() {
+    const editor = document.getElementById("editor");
+    const texto = (editor?.innerText || editor?.value || "").trim();
+    const temperatura = parseFloat(document.getElementById("temperatureSlider").value);
+
+    if (!texto) {
+      alert("⚠️ O editor está vazio.");
+      return;
+    }
+
+    // Mostre algum feedback visual se tiver sua área de “lousa”/status
+    try {
+      const res = await fetch('/corrigir2', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto: texto, temperature: temperatura })
+      });
+      const data = await res.json();
+
+      if (data.corrigido) {
+        // Exiba onde você já mostra as saídas (ex.: lousa/caixa lateral)
+        // Aqui um exemplo simples que injeta de volta no editor:
+        editor.innerHTML = data.corrigido;
+      } else {
+        alert("Erro: " + (data.erro || "Falha ao processar."));
+      }
+    } catch (e) {
+      alert("Erro de rede: " + e.message);
+    }
+  }
