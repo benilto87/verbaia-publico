@@ -477,26 +477,28 @@ def criar_rascunho():
         return jsonify({"erro": "Texto vazio."}), 400
 
     prompt = f"""
-Você é uma inteligência literária que transforma **fragmentos esboçados** em um **rascunho textual fluido, coerente e estilisticamente refinado**.
+✍️ Você é uma inteligência literária que transforma **fragmentos esboçados** em um **rascunho textual fluido, coerente e estilisticamente refinado**.
 
-- Unir os fragmentos respeitando a voz implícita do autor.
-- Criar transições naturais, ritmo e atmosfera entre as partes.
-- **Marcar em negrito as partes realmente modificadas ou adicionadas** (para evidenciar as mudanças relevantes).
-⚠️Escreva somente em português do Brasil.
+Instruções:
+1. Unir os fragmentos respeitando a voz implícita do autor. 
+2. Criar transições naturais, ritmo e atmosfera entre as partes. 
+3. Marque em negrito as partes que foram realmente modificadas ou adicionadas, para indicar as mudanças relevantes. 
+4. A Lista de mudanças deve ser coerente com os trechos destacados em negrito no texto de saída.
 
 Exemplo de entrada:
 O dia amanhecia cinzento.
 Ela olhava pela janela sem dizer nada.
 Um pássaro pousou no parapeito.
 
-Exemplo de saída esperada:
-O dia amanheceu **vestindo o mundo de cinza**. E ela olhando a **janela sem dizer nada**. Um pássaro pousou **suave como um presságio sobre o** parapeito.
+Exemplo de saída esperado:
+O dia amanheceu **vestindo o mundo de cinza**. **Ela permanecia imóvel, olhando pela janela sem dizer nada.**  
+Um pássaro pousou **suave como um presságio sobre o** parapeito.  
 
+🌙🌾 **Lista de mudanças:**
+1. Enriqueci a metáfora inicial com _“vestindo o mundo de cinza”_.
+2. Transformei a frase da personagem em construção mais poética e cadenciada.
+3. Tornei o pouso do pássaro mais sugestivo com _“suave como um presságio”_.
 
-⚠NO CASO DE PEDIDOS:
-- Se detectar um pedido exemplo: "Quero que escreve estilo Machado de Assis" ou "De um bom acabamento ao texto", etc... siga conforme o pedido.
-E retorne "escrito no estilo Machado de Assis...✍", "texto com melhor acabamento...✍" "etc...✍"
-- Se não houver pedido apenas termine com "_Rascunho pronto✔_" em _italico_.
 
 Agora processe o bloco abaixo:
 {texto_bruto}
@@ -604,9 +606,9 @@ Quando o corvo pousou no parapeito; **o som das asas arranhou o silêncio.**
 No instante em que abriu o bico, não veio som **— apenas a certeza fria e afiada de que, em algum lugar, uma porta acabara de se fechar,** para sempre.
 
 🌙🌾 **Lista de mudanças:**
-1. Adicionei contraste climático (“não de chuva, mas de ausência”) para enriquecer a imagem inicial.
-2. Substituí a descrição redundante do barulho das asas por uma imagem mais enxuta e direta (“_o som das asas arranhou o silêncio_”).
-3. Condensei o final repetitivo em uma frase de impacto mais seca e literária (“_apenas a certeza fria e afiada de que, em algum lugar, uma porta acabara de se fechar._”).
+1. Adicionei contraste climático _“não de chuva, mas de ausência”_ para enriquecer a imagem inicial.
+2. Substituí a descrição redundante do barulho das asas por uma imagem mais enxuta e direta _“o som das asas arranhou o silêncio”_.
+3. Condensei o final repetitivo em uma frase de impacto mais seca e literária _“apenas a certeza fria e afiada de que, em algum lugar, uma porta acabara de se fechar.”_
 
 Texto do usuário:
 {texto_original}
